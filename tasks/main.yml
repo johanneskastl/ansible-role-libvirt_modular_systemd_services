@@ -1,0 +1,85 @@
+---
+# libvirt_modular_systemd_services/tasks/main.yml
+
+- name: 'Disable monolithic service and sockets'
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: 'stopped'
+    enabled: false
+    masked: true
+  loop:
+    - 'libvirtd.service'
+    - 'libvirtd.socket'
+    - 'libvirtd-ro.socket'
+    - 'libvirtd-admin.socket'
+    - 'libvirtd-tcp.socket'
+    - 'libvirtd-tls.socket'
+
+- name: 'Enable the modular services'
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    enabled: true
+    masked: false
+  loop:
+    - 'virtqemud.service'
+    - 'virtinterfaced.service'
+    - 'virtnetworkd.service'
+    - 'virtnodedevd.service'
+    - 'virtnwfilterd.service'
+    - 'virtsecretd.service'
+    - 'virtstoraged.service'
+
+- name: 'Start and enable the modular services and sockets'
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: 'started'
+    enabled: true
+  loop:
+    - 'virtqemud.socket'
+    - 'virtqemud-ro.socket'
+    - 'virtqemud-admin.socket'
+    - 'virtnetworkd.socket'
+    - 'virtnetworkd-ro.socket'
+    - 'virtnetworkd-admin.socket'
+    - 'virtnodedevd.socket'
+    - 'virtnodedevd-ro.socket'
+    - 'virtnodedevd-admin.socket'
+    - 'virtnwfilterd.socket'
+    - 'virtnwfilterd-ro.socket'
+    - 'virtnwfilterd-admin.socket'
+    - 'virtsecretd.socket'
+    - 'virtsecretd-ro.socket'
+    - 'virtsecretd-admin.socket'
+    - 'virtstoraged.socket'
+    - 'virtstoraged-ro.socket'
+    - 'virtstoraged-admin.socket'
+
+- name: 'Start and enable the xen sockets (if requested by the user)'
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: 'started'
+    enabled: true
+    masked: false
+  loop:
+    - 'virtxend.socket'
+    - 'virtxend-ro.socket'
+    - 'virtxend-admin.socket'
+  when:
+    - enable_libvirt_xen_sockets is defined
+    - enable_libvirt_xen_sockets | bool
+
+- name: 'Start and enable the proxy sockets (if requested by the user)'
+  ansible.builtin.systemd_service:
+    name: "{{ item }}"
+    state: 'started'
+    enabled: true
+    masked: false
+  loop:
+    - 'virtproxyd.service'
+    - 'virtproxyd.socket'
+    - 'virtproxyd-ro.socket'
+    - 'virtproxyd-admin.socket'
+    - 'virtproxyd-tls.socket'
+  when:
+    - enable_libvirt_proxy_sockets is defined
+    - enable_libvirt_proxy_sockets | bool
