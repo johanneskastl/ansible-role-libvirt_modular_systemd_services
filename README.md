@@ -19,6 +19,9 @@ enabling the modular daemons and their sockets.
   machines are to be allowed, the `virtproxyd.service` and the related sockets
   (`virtproxyd{,-ro,-admin}.socket`) need to be enabled. This can be done by
   setting this variable to `true` (default: `false`)
+- `enable_libvirt_tls_proxy_socket` (Boolean): In addition to the proxy service
+  and sockets, you can set this variable to `true` to also enable the
+  `virtproxyd-tls.socket` (default: `false`)
 
 ## Dependencies
 
