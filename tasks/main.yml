@@ -79,7 +79,18 @@
     - 'virtproxyd.socket'
     - 'virtproxyd-ro.socket'
     - 'virtproxyd-admin.socket'
-    - 'virtproxyd-tls.socket'
   when:
     - enable_libvirt_proxy_sockets is defined
     - enable_libvirt_proxy_sockets | bool
+
+- name: 'Start and enable the virtproxyd-tls.socket'
+  ansible.builtin.systemd_service:
+    name: "virtproxyd-tls.socket"
+    state: 'started'
+    enabled: true
+    masked: false
+  when:
+    - enable_libvirt_proxy_sockets is defined
+    - enable_libvirt_proxy_sockets | bool
+    - enable_libvirt_tls_proxy_socket is defined
+    - enable_libvirt_tls_proxy_socket | bool
