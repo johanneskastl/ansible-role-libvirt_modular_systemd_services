@@ -14,14 +14,14 @@ enabling the modular daemons and their sockets.
 
 - `enable_libvirt_xen_sockets` (Boolean): Whether the Libvirt xen sockets
   (`virtxend{,-ro,-admin}.socket`) should be enabled and started (default:
-  `false`)
+  `undefined`)
 - `enable_libvirt_proxy_sockets` (Boolean): To allow connections from remote
   machines are to be allowed, the `virtproxyd.service` and the related sockets
   (`virtproxyd{,-ro,-admin}.socket`) need to be enabled. This can be done by
-  setting this variable to `true` (default: `false`)
+  setting this variable to `true` (default: `undefined`)
 - `enable_libvirt_tls_proxy_socket` (Boolean): In addition to the proxy service
   and sockets, you can set this variable to `true` to also enable the
-  `virtproxyd-tls.socket` (default: `false`)
+  `virtproxyd-tls.socket` (default: `undefined`)
 
 ## Dependencies
 
